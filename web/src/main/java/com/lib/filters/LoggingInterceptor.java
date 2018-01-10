@@ -122,8 +122,6 @@ public class LoggingInterceptor implements Filter {
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
 			throws IOException, ServletException {
 
-		System.out.println("Inside doFilter");
-
 		final HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 		BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpRequest);
 

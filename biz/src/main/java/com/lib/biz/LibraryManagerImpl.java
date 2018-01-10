@@ -1,7 +1,11 @@
 package com.lib.biz;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Sets;
 import com.lib.dao.ILibraryPersistence;
@@ -12,19 +16,33 @@ import com.lib.enums.ERROR_CODE;
 
 public class LibraryManagerImpl implements ILibraryManager {
 
+	@Autowired
 	ILibraryPersistence librarayPersistence;
 
 	@Override
-	public void addBooks(Set<Book> books) {
-		for(Book book : books) {
+	public void addBooks(List<Book> books) {
+		if(books.isEmpty()) {
+			throw new IllegalArgumentException("Nothing to add");
+		}
+		for (Book book : books) {
+			if (StringUtils.isEmpty(book.getName())) {
+				throw new IllegalArgumentException("book name is mandatory");
+			}
+			book.setStatus(BOOK_STATUS.UN_ASSIGNED);
 			book.setId(UUID.randomUUID().toString());
 		}
 		librarayPersistence.addBooks(books);
 	}
 
 	@Override
-	public void addUsers(Set<User> users) {
-		for(User user : users) {
+	public void addUsers(List<User> users) {
+		if(users.isEmpty()) {
+			throw new IllegalArgumentException("Nothing to add");
+		}
+		for (User user : users) {
+			if (StringUtils.isEmpty(user.getName())) {
+				throw new IllegalArgumentException("user name is mandatory");
+			}
 			user.setId(UUID.randomUUID().toString());
 		}
 		librarayPersistence.addUsers(users);
@@ -61,12 +79,10 @@ public class LibraryManagerImpl implements ILibraryManager {
 			Book book = librarayPersistence.loadBook(bookId);
 
 			if (book == null) {
-				System.out.println("invalid book : " + bookId);
-				continue;
+				throw new IllegalArgumentException("invalid book id: " + bookId);
 			}
 			if (book.getStatus() == BOOK_STATUS.ASSIGNED) {
-				System.out.println("book is already assigned");
-				continue;
+				throw new IllegalArgumentException("book : " + bookId + " is already assigned");
 			}
 
 			book.setStatus(BOOK_STATUS.ASSIGNED);
@@ -86,15 +102,19 @@ public class LibraryManagerImpl implements ILibraryManager {
 		for (String bookId : booksId) {
 			Book book = librarayPersistence.loadBook(bookId);
 			if (book == null) {
-				System.out.println("invalid book : " + bookId);
+				throw new IllegalArgumentException("invalid book id: " + bookId);
 			}
-			book.setStatus(BOOK_STATUS.UN_ASSIGNED);
-			book.setStatus(null);
 
+			if(book.getStatus() == BOOK_STATUS.UN_ASSIGNED) {
+				throw new IllegalArgumentException("Book "+ bookId + " is not assigned");
+			}
 			User user = librarayPersistence.loadUser(book.getAssignedTo());
 			Set<String> borrowedBooks = user.getBorrowedBooks();
 			borrowedBooks.remove(bookId);
 			user.setBorrowedBooks(borrowedBooks);
+
+			book.setStatus(BOOK_STATUS.UN_ASSIGNED);
+			book.setAssignedTo(null);
 
 			librarayPersistence.updateBook(book);
 			librarayPersistence.updateUser(user);

@@ -1,5 +1,6 @@
 package com.lib.dao;
 
+import java.util.List;
 import java.util.Set;
 
 import com.lib.data.Book;
@@ -7,9 +8,9 @@ import com.lib.data.User;
 
 public interface ILibraryPersistence {
 
-	void addBooks(Set<Book> books);
+	void addBooks(List<Book> books);
 
-	void addUsers(Set<User> users);
+	void addUsers(List<User> users);
 
 	Book loadBook(String bookId);
 

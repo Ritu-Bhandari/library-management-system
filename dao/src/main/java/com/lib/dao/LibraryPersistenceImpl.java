@@ -1,5 +1,6 @@
 package com.lib.dao;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,14 +16,14 @@ public class LibraryPersistenceImpl implements ILibraryPersistence {
 	private volatile Map<String, User> usersMap = Maps.newHashMap();
 
 	@Override
-	public void addBooks(Set<Book> books) {
+	public void addBooks(List<Book> books) {
 		for (Book book : books) {
 			booksMap.put(book.getId(), book);
 		}
 	}
 
 	@Override
-	public void addUsers(Set<User> users) {
+	public void addUsers(List<User> users) {
 		for (User user : users) {
 			usersMap.put(user.getId(), user);
 		}

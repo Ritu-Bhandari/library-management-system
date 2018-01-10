@@ -1,9 +1,11 @@
 package com.lib.data;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lib.enums.BOOK_STATUS;
 
 import lombok.Data;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class Book {
 

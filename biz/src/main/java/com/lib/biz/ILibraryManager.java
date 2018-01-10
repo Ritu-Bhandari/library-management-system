@@ -1,5 +1,6 @@
 package com.lib.biz;
 
+import java.util.List;
 import java.util.Set;
 
 import com.lib.data.Book;
@@ -8,9 +9,9 @@ import com.lib.data.User;
 
 public interface ILibraryManager {
 
-	void addBooks(Set<Book> books);
+	void addBooks(List<Book> books);
 
-	void addUsers(Set<User> users);
+	void addUsers(List<User> users);
 
 	void lendBooks(Set<String> booksId, String userId);
 
