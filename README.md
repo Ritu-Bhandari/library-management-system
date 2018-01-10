@@ -4,6 +4,21 @@ Library Management Project
 # Library-management
 Library Management Project
 
+To Run this project :
+1) clone this repository.
+2) run   "mvn clean install" inside main folder -> library-management-system
+3) go inside web folder "cd web"
+4) run "mvn jetty:run"
+
+To Debug :
+
+Run this command on your command prompt :
+export MAVEN_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n"
+
+and then set DEBUG configuration to enable this port for debugging.
+
+
+API Signature : 
 
 1) TO Add books :
 http://localhost:8080/library/v1/add/books
