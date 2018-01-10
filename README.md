@@ -1,1 +1,2 @@
-# library-management-system
+# budget-management
+Budget Management Project
